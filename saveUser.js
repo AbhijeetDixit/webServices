@@ -1,14 +1,11 @@
-/*var firebase = require('firebase');
+var firebase = require('firebase');
 
 //Initializing
 var config = {
-	apiKey : "<API_KEY>",
-	authDomain : "<PROJECT_ID>.firebaseApp.com",
-	databaseURL: "https://<DATABASE_NAME>.firebaseio.com",
-	storageBucket: "<BUCKET>.appspot.com",
+	apiKey : "<WEB_API_KEY>",
+	databaseURL: "<PATH_TO_DATABASE>",
 };
 firebase.initializeApp(config);
-*/
 
 var http = require('http'),
 	express = require('express'),
@@ -20,6 +17,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function (req, res) {
 	res.send('<html><body><h1>Hello World</h1></body></html>');
+});
+
+app.get('/fetchPostData', function (req, res) {
+	var postRef = firebase.database().ref('/postData/post0/');
+	postRef.once('value').then(function (snapshot) {
+		res.send(snapshot.val());
+	});	
 });
 
 app.use(function (req, res) {
